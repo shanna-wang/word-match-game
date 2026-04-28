@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Match Game</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main>
+      <section id="builder-view" class="view">
+        <h1>Word Match Puzzle Builder</h1>
+        
+        <div class="card">
+          <p class="subtitle">
+            Fill or paste comma-separated items into each group card.
+          </p>
+          <p class="subtitle">
+            Press <code>ENTER</code> to
+            move to the next field, or add a new field. Press <code>TAB</code> on the
+            group title or the last item in a group to add a new group.
+          </p>
+        </div>
+        
+        <div id="group-form-container"></div>
+          
+          
+
+        <div class="card">
+          <p id="builder-summary" class="builder-summary" role="status" aria-live="polite">
+            Your puzzle contains <span id="summary-groups-count" class="builder-summary-num">0</span> groups of
+            <span id="summary-items-count" class="builder-summary-num">0</span> items, with a total of
+            <span id="summary-total-items-count" class="builder-summary-num">0</span> items to match.
+          </p>
+          <p id="builder-error" class="error hidden" role="alert" aria-live="polite"></p>
+          
+          <div class="builder-actions">
+            <div class="inline-fields">
+              <button id="generate-link-btn" type="button" class="primary-btn">Generate puzzle</button>
+              <button id="clear-draft-btn" type="button">Clear draft</button>
+            </div>
+            
+          </div>
+        </div>
+        
+      </section>
+    </main>
+
+    <script src="./builder.js"></script>
+  </body>
+</html>

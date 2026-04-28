@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Match Game</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main>
+      <section id="play-view" class="view">
+        <header class="toolbar">
+          <div class="toolbar-top">
+            <h1 id="game-title">Word Match</h1>
+            <div class="inline-fields">
+              
+              <button id="reset-puzzle-btn" type="button">Reset</button>
+              <a href="./index.html" id="new-puzzle-link">Create</a>
+              <button id="share-puzzle-btn" type="button" class="primary-btn">Share puzzle</button>
+            </div>
+          </div>
+          <div id="toolbar-stats-row" class="toolbar-stats">
+            <div class="toolbar-stats-left">
+              <span id="categories-count" class="categories-count" aria-live="polite"></span>
+              <span id="matched-count">Matched: <code>0</code></span>
+              <span id="remaining-count">Remaining: <code>0</code></span>
+              <span id="mistakes-count">Mistakes: <code>0</code></span>
+              <button id="deselect-all-btn" type="button">Deselect all</button>
+            </div>
+            <div class="toolbar-stats-messages" aria-label="Status messages">
+              <p id="game-error" class="error" role="alert"></p>
+              <p id="share-status" class="muted" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+        </header>
+
+        <section id="win-banner" class="win-banner hidden" role="status" aria-live="polite"></section>
+
+        <section id="game-grid" class="game-grid" aria-live="polite"></section>
+      </section>
+    </main>
+    <script src="./play.js"></script>
+  </body>
+</html>

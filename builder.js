@@ -1,5 +1,8 @@
 const groupFormContainer = document.getElementById("group-form-container");
 const generateLinkBtn = document.getElementById("generate-link-btn");
+const exportJsonBtn = document.getElementById("export-json-btn");
+const importJsonBtn = document.getElementById("import-json-btn");
+const importJsonInput = document.getElementById("import-json-input");
 const clearDraftBtn = document.getElementById("clear-draft-btn");
 const builderSummary = document.getElementById("builder-summary");
 const builderError = document.getElementById("builder-error");
@@ -50,6 +53,20 @@ function clearBuilderDraft() {
   builderState.itemCount = 4;
   builderState.groups = [{ name: "", items: ["", "", "", ""] }];
   renderBuilderForm();
+}
+
+function applyPuzzleToBuilder(puzzle) {
+  const normalized = normalizePuzzle(puzzle);
+  const groups = normalized.groups.map((group) => ({
+    name: group.name,
+    items: [...group.items],
+  }));
+  const nextItemCount = Math.max(2, ...groups.map((group) => group.items.length));
+  builderState.itemCount = nextItemCount;
+  builderState.groups = groups;
+  syncAllGroupsToItemCount();
+  saveBuilderDraft();
+  renderBuilderForm({ focusGroup: 0, focusField: 0 });
 }
 
 function encodePuzzleToHash(puzzle) {
@@ -456,6 +473,45 @@ generateLinkBtn.addEventListener("click", () => {
     updateBuilderStatus();
   } catch (err) {
     updateBuilderStatus({ forceMessage: err.message });
+  }
+});
+
+exportJsonBtn.addEventListener("click", () => {
+  try {
+    const puzzle = collectPuzzleFromForm();
+    const payload = JSON.stringify(puzzle, null, 2);
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = "word-match-puzzle.json";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    downloadLink.remove();
+    URL.revokeObjectURL(url);
+    updateBuilderStatus();
+  } catch (err) {
+    updateBuilderStatus({ forceMessage: err.message || "Could not export JSON." });
+  }
+});
+
+importJsonBtn.addEventListener("click", () => {
+  importJsonInput.click();
+});
+
+importJsonInput.addEventListener("change", async (event) => {
+  const input = event.currentTarget;
+  const file = input.files && input.files[0];
+  if (!file) return;
+  try {
+    const raw = await file.text();
+    const parsed = JSON.parse(raw);
+    applyPuzzleToBuilder(parsed);
+    updateBuilderStatus();
+  } catch (err) {
+    updateBuilderStatus({ forceMessage: err.message || "Invalid JSON file." });
+  } finally {
+    input.value = "";
   }
 });
 
